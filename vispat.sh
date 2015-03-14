@@ -6,7 +6,7 @@ if [ -f /etc/redhat-release ] && [ -x /usr/bin/vimx ]; then
 fi
 export MYVIM
 
-alias wp=select_vim_pane
+alias vp=select_vim_pane
 
 # vim_server_name
 # determines the name of the vim server that
