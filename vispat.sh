@@ -4,6 +4,11 @@ MYVIM=/usr/bin/vim
 if [ -f /etc/redhat-release ] && [ -x /usr/bin/vimx ]; then
     MYVIM=/usr/bin/vimx
 fi
+if ! vim -h | grep Servername >> /dev/null; then
+    echo "vispat could not find a vim with server features"
+    return
+fi
+
 export MYVIM
 
 alias vp=select_vim_pane
