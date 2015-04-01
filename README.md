@@ -64,10 +64,10 @@ If you want to be able to edit perl modules by package name:
 
     v IO::All
 
-will the find the file implementing `IO::All` (you will have to install
+will then find the file implementing `IO::All` (you will have to install
 `Module::Path` for this to work)
 
-### Perl module support
+### vim tab support
 
     export vispat_use_tabs=1
 
