@@ -44,10 +44,15 @@ function v() {
 
     # If the filename contains "::", treat it as a perl module
     # and run mpath to find it.
-    # TODO: Make this work for more than just the first file
-    if [[ -n "$vispat_for_perl" ]] && [[ $1 == *::* ]]; then
-        file=$( mpath "$1" )
-        params="$params $file"
+    if [[ -n "$vispat_for_perl" ]]; then
+        for param in $@; do
+            if [[ "$param" == [A-Za-z]*::* ]]; then
+                file=$( mpath "$param" )
+                params="$params $file"
+            else
+                params="$params $param"
+            fi
+        done
     else
         params="$params $@"
     fi
