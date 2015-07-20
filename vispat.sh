@@ -20,7 +20,7 @@ alias vp=select_vim_pane
 # session name and 01 is the number of the current
 # window.
 function vim_server_name() {
-    local window=$( printf "%02d_%02d" $( tmux display-message -p '#S' ) $( tmux display-message -p '#I' ) )
+    local window=$( printf "%s_%02d" $( tmux display-message -p '#S' ) $( tmux display-message -p '#I' ) )
     local server="VIMSERVER.$window"
     echo $server
 }
