@@ -74,12 +74,13 @@ function select_vim_pane() {
 }
 
 function ws() {
-    if [[ $( tmux list-pane | grep -v active ) ]]; then
+    local window=$(tmux display-message -pF '#{window_index}')
+    if [[ $( tmux list-panes -t $window | grep -v active ) ]]; then
         tmux send-keys -t :.+ C-d
         sleep 1
     fi
 
-    tmux split-window -hdp 50
-    tmux send-keys -t :.+ v Enter
+    tmux split-window -hdp 50 -t:$window
+    tmux send-keys -t:$window.1 v Enter
 }
 
