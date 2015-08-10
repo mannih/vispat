@@ -20,9 +20,7 @@ alias vp=select_vim_pane
 # session name and 01 is the number of the current
 # window.
 function vim_server_name() {
-    local window=$( printf "%s_%02d" $( tmux display-message -p '#S' ) $( tmux display-message -p '#I' ) )
-    local server="VIMSERVER.$window"
-    echo $server
+    echo $( printf "VIMSERVER.%s_%02d" $( tmux display-message -p '#S' ) $( tmux display-message -p '#I' ) )
 }
 
 function v() {
@@ -74,15 +72,9 @@ function select_vim_pane() {
 }
 
 function ws() {
-    if [[ "$1x" == "x" ]]; then
-        local window=$(tmux display-message -pF '#{window_index}')
-    else
-        local window=$1
-        echo "starting workspace in tmux window $window"
-    fi
-    if [[ $( tmux list-panes -t $window | grep -v active ) ]]; then
+    local window=$(tmux display-message -pF '#{window_index}')
+    if [[ $( tmux list-panes -t:$window | grep -v active ) ]]; then
         tmux send-keys -t :.+ C-d
-        sleep 1
     fi
 
     tmux split-window -hdp 50 -t:$window
