@@ -78,8 +78,8 @@ function ws() {
         local window=$(tmux display-message -pF '#{window_index}')
     else
         local window=$1
+        echo "starting workspace in tmux window $window"
     fi
-    echo "starting workspace in tmux window $window"
     if [[ $( tmux list-panes -t $window | grep -v active ) ]]; then
         tmux send-keys -t :.+ C-d
         sleep 1
