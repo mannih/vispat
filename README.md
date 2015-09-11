@@ -65,7 +65,12 @@ If you want to be able to edit perl modules by package name:
     v IO::All
 
 will then find the file implementing `IO::All` (you will have to install
-`Module::Path` for this to work)
+`Module::Path` for this to work). Also:
+
+    v Moo
+
+This works detecting two colons or by matching arguments that start with
+a capital letter and do not contain a dot.
 
 ### vim tab support
 

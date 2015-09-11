@@ -40,11 +40,13 @@ function v() {
         fi
     fi
 
-    # If the filename contains "::", treat it as a perl module
+    # If the filename contains "::" or if it starts with a captial letter
+    # and does not contain a dot, treat it as the name of a perl module
     # and run mpath to find it.
     if [[ -n "$vispat_for_perl" ]]; then
+        local module_pattern="::|(^[A-Z][^.]+$)"
         for param in $@; do
-            if [[ "$param" == [A-Za-z]*::* ]]; then
+            if [[ "$param" =~ $module_pattern ]]; then
                 file=$( mpath "$param" )
                 params="$params $file"
             else
