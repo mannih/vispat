@@ -25,17 +25,18 @@ function vim_server_name() {
 
 function v() {
     local server=$( vim_server_name )
-    local params="--servername $server"
+    local vim_params="--servername $server"
     local toggle_pane=1
+    local vim_files=()
 
     # vim tabs require a few extra parameters
     if [[ -n "$vispat_use_tabs" ]]; then
         if [ -n "$( $MYVIM --serverlist | grep -w $server )" ]; then
-            params="$params --remote-tab-silent"
+            vim_params="$vim_params --remote-tab-silent"
         else
             toggle_pane=
             if [ $# -gt 1 ]; then
-                params="$params -p"
+                vim_params="$vim_params -p"
             fi
         fi
     fi
@@ -43,26 +44,21 @@ function v() {
     # If the filename contains "::" or if it starts with a captial letter
     # and does not contain a dot, treat it as the name of a perl module
     # and run mpath to find it.
-    if [[ -n "$vispat_for_perl" ]]; then
-        local module_pattern="::|(^[A-Z][^.]+$)"
-        for param in $@; do
-            if [[ "$param" =~ $module_pattern ]]; then
-                file=$( mpath "$param" )
-                local ok=$?
-                if [ $ok -eq 0 ]; then
-                    params="$params $file"
-                else
-                    params="$params $param"
-                fi
-            else
-                params="$params $param"
+    local perl_module_pattern="::|(^[A-Z][^.]+$)"
+    for arg; do
+        if [[ -n "$vispat_for_perl" ]] && [[ "$arg" =~ $perl_module_pattern ]]; then
+            local ok
+            local file
+            file=$( mpath "$arg" )
+            ok=$?
+            if [ $ok -eq 0 ]; then
+                arg="$file"
             fi
-        done
-    else
-        params="$params $@"
-    fi
+        fi
+        vim_files+=("$arg")
+    done
 
-    $MYVIM $params
+    $MYVIM $vim_params "${vim_files[@]}"
 
     if [ $toggle_pane ]; then
         select_vim_pane
