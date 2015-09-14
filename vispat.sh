@@ -48,7 +48,12 @@ function v() {
         for param in $@; do
             if [[ "$param" =~ $module_pattern ]]; then
                 file=$( mpath "$param" )
-                params="$params $file"
+                local ok=$?
+                if [ $ok -eq 0 ]; then
+                    params="$params $file"
+                else
+                    params="$params $param"
+                fi
             else
                 params="$params $param"
             fi
