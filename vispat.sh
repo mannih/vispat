@@ -25,18 +25,18 @@ function vim_server_name() {
 
 function v() {
     local server=$( vim_server_name )
-    local vim_params="--servername $server"
+    local vim_params=(--servername "$server")
     local toggle_pane=1
     local vim_files=()
 
     # vim tabs require a few extra parameters
     if [[ -n "$vispat_use_tabs" ]]; then
         if [ -n "$( $MYVIM --serverlist | grep -w $server )" ]; then
-            vim_params="$vim_params --remote-tab-silent"
+            vim_params+=(--remote-tab-silent)
         else
             toggle_pane=
             if [ $# -gt 1 ]; then
-                vim_params="$vim_params -p"
+                vim_params+=(-p)
             fi
         fi
     fi
@@ -58,7 +58,7 @@ function v() {
         vim_files+=("$arg")
     done
 
-    $MYVIM $vim_params "${vim_files[@]}"
+    $MYVIM "${vim_params[@]}" "${vim_files[@]}"
 
     if [ $toggle_pane ]; then
         select_vim_pane
