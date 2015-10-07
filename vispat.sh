@@ -39,6 +39,8 @@ function v() {
                 vim_params+=(-p)
             fi
         fi
+    elif [ -n "$1" ]; then
+        vim_params+=(--remote-silent)
     fi
 
     # If the filename contains "::" or if it starts with a captial letter
