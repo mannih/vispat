@@ -19,11 +19,11 @@ alias vp=select_vim_pane
 # a string like VIMSERVER.00_01 where 00 is the
 # session name and 01 is the number of the current
 # window.
-function vim_server_name() {
+function vim_server_name {
     echo $( printf "VIMSERVER.%s_%02d" $( tmux display-message -p '#S' ) $( tmux display-message -p '#I' ) )
 }
 
-function v() {
+function v {
     local server=$( vim_server_name )
     local vim_params=(--servername "$server")
     local toggle_pane=1
@@ -67,16 +67,16 @@ function v() {
     fi
 }
 
-function select_vim_pane() {
+function select_vim_pane {
     local targetpane=$( tmux list-panes -F '#{pane_current_command} #P' | grep vim | cut -d' ' -f2 )
-    if [ "x$targetpane" == "x" ]; then
+    if [[ -z "$targetpane" ]]; then
         echo "could not find a pane with a running vim"
     else
         tmux select-pane -t $targetpane
     fi
 }
 
-function ws() {
+function ws {
     local window=$(tmux display-message -pF '#{window_index}')
     if [[ $( tmux list-panes -t:$window | grep -v active ) ]]; then
         tmux send-keys -t :.+ C-d
