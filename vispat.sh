@@ -47,6 +47,8 @@ function v {
     # and does not contain a dot, treat it as the name of a perl module
     # and run mpath to find it.
     local perl_module_pattern="::|(^[A-Z][^.]+$)"
+    local git_diff_pattern="^([ab]/)(.+)"
+
     for arg; do
         if [[ -n "$vispat_for_perl" ]] && [[ "$arg" =~ $perl_module_pattern ]]; then
             local ok
@@ -57,6 +59,11 @@ function v {
                 arg="$file"
             fi
         fi
+
+        if [[ "$arg" =~ $git_diff_pattern ]]; then
+            arg=${arg#[ab]/}
+        fi
+
         vim_files+=("$arg")
     done
 
