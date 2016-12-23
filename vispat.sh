@@ -4,7 +4,7 @@ MYVIM=/usr/bin/vim
 if [ -f /etc/redhat-release ] && [ -x /usr/bin/vimx ]; then
     MYVIM=/usr/bin/vimx
 fi
-if ! $MYVIM -h | grep servername >> /dev/null; then
+if ! $MYVIM -h | grep servername > /dev/null; then
     echo "vispat could not find a vim with server features"
     return
 fi
