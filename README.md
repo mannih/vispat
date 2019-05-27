@@ -1,6 +1,6 @@
 # vispat
 
-Vim Server In A Tmux Pane
+Vim (or neovim) Server In A Tmux Pane
 
 ## Why?
 
@@ -22,15 +22,23 @@ file in the already running `vim` on the right.
   vim-package to install. E.g., on Fedora you need to install `vim-X11`.
 - To be able to load Perl modules by their package name, install
   `Module::Path`
+- If you want to use neovim instead of vim, you will also have to install
+   [neovim-remote](https://github.com/mhinz/neovim-remote)
 
 ## Installation
 
     cd somedir
     git clone https://github.com/mannih/vispat.git
 
-And in your .bashrc, add the line
+Then, in your .bashrc or .zshrc, add the line
 
     source somedir/vispat/vispat.sh
+
+for use with vim or
+
+    source somedir/vispat/nvispat.sh
+
+for use with neovim.
 
 ## Usage
 
