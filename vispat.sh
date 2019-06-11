@@ -93,3 +93,18 @@ function ws {
     tmux send-keys -t:$window.1 v Enter
 }
 
+sourced=false
+if [ -n "$ZSH_EVAL_CONTEXT" ]; then
+    case $ZSH_EVAL_CONTEXT in *:file) sourced=true;; esac
+elif [ -n "$KSH_VERSION" ]; then
+  [ "$(cd $(dirname -- $0) && pwd -P)/$(basename -- $0)" != "$(cd $(dirname -- ${.sh.file}) && pwd -P)/$(basename -- ${.sh.file})" ] && sourced=1
+elif [ -n "$BASH_VERSION" ]; then
+  (return 0 2>/dev/null) && sourced=true
+else # All other shells: examine $0 for known shell binary filenames
+  # Detects `sh` and `dash`; add additional shell filenames as needed.
+  case ${0##*/} in sh|dash) sourced=true;; esac
+fi
+
+if ! $sourced; then
+    v "$@"
+fi
