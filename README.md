@@ -42,7 +42,7 @@ for use with neovim.
 
 ## Usage
 
-vispat gives you a couple of bash functions to use from the command
+vispat gives you a couple of shell functions to use from the command
 line:
 
 - `ws`
@@ -77,7 +77,7 @@ will then find the file implementing `IO::All` (you will have to install
 
     v Moo
 
-This works detecting two colons or by matching arguments that start with
+This works by detecting two colons or by matching arguments that start with
 a capital letter and do not contain a dot.
 
 ### vim tab support
