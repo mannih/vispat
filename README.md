@@ -22,8 +22,6 @@ file in the already running `vim` on the right.
   vim-package to install. E.g., on Fedora you need to install `vim-X11`.
 - To be able to load Perl modules by their package name, install
   `Module::Path`
-- If you want to use neovim instead of vim, you will also have to install
-   [neovim-remote](https://github.com/mhinz/neovim-remote)
 
 ## Installation
 
@@ -47,7 +45,7 @@ line:
 
 - `ws`
 
-Create a vertical split and start `vim` in the right pane.
+Create a vertical split and start `vim` in the right pane. "ws" as in "work space".
 
 - `select_vim_pane` (aliased to `vp`)
 
@@ -86,4 +84,3 @@ a capital letter and do not contain a dot.
 
 If you prefer using `vim`'s tabs feature. Every file you load with v will then
 open in a new tab.
-
