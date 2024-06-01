@@ -4,27 +4,35 @@ MYVIM=/usr/bin/nvim
 
 alias vp=select_vim_pane
 
-# nvim_listen_address
+# nvim_remote_pipe
 # determines the socket used by nvim.
 # This will produce a path like
-# /tmp/VIMSERVER.00_01 where 00 is the
-# tmux session name and 01 is the
-# number of the current tmux window.
+# ~/.cache/nvim/server.00_01.pipe
+# where 00 is the tmux session name
+# and 01 is the number of the current
+# tmux window.
 
-function nvim_listen_address {
-    echo $( printf "/tmp/VIMSERVER.%s_%02d" "$( tmux display-message -p '#S' )" "$( tmux display-message -p '#I' )" )
+function nvim_remote_pipe {
+    mkdir -p ~/.cache/nvim/
+    echo $( printf "$HOME/.cache/nvim/server.%s_%02d.pipe" "$( tmux display-message -p '#S' )" "$( tmux display-message -p '#I' )" )
 }
 
 function v {
-    export NVIM_LISTEN_ADDRESS=$( nvim_listen_address )
+    local nvpipe=$( nvim_remote_pipe )
     local toggle_pane=true
     local vim_params=()
+    local vim_files=()
+
+    if [ -e "$nvpipe" ]; then
+        vim_params+=(--server $nvpipe)
+    else
+        vim_params+=(--listen $nvpipe)
+    fi
 
     # vim tabs require a few extra parameters
     if [[ -n "$vispat_use_tabs" ]]; then
-        if [ -n "$( nvr --serverlist | grep -w $( nvim_listen_address ) )" ]; then
+        if [ -e $nvpipe ]; then
             vim_params+=(--remote-tab-silent)
-            MYVIM=nvr
         else
             toggle_pane=false
             if [ $# -gt 1 ]; then
@@ -79,6 +87,10 @@ function ws {
         tmux send-keys -t :.+ C-d
     fi
 
-    tmux split-window -hdp 50 -t:$window
+    splitopts="-hdl 50%"
+    if [[ $tmuxversion =~ '3[.][0123]' ]]; then
+        splitopts="-hdp 50"
+    fi
+    tmux split-window $splitopts -t:$window
     tmux send-keys -t:$window.1 v Enter
 }
