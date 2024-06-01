@@ -89,7 +89,11 @@ function ws {
         tmux send-keys -t :.+ C-d
     fi
 
-    tmux split-window -hdp 50 -t:$window
+    splitopts="-hdl 50%"
+    if [[ $tmuxversion =~ '3[.][0123]' ]]; then
+        splitopts="-hdp 50"
+    fi
+    tmux split-window $splitopts -t:$window
     tmux send-keys -t:$window.1 v Enter
 }
 
