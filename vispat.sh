@@ -1,6 +1,6 @@
 # vispat
 
-MYVIM=/usr/bin/vim
+MYVIM=$(which vim)
 if [ -f /etc/redhat-release ] && [ -x /usr/bin/vimx ]; then
     MYVIM=/usr/bin/vimx
 fi
